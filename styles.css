@@ -1,0 +1,29 @@
+/* Bootstrap Overrides */
+nav { background-color:#000;}
+.nav-title { color:#fff; border-bottom:2px solid lime; }
+@media (min-width: 575.98px) {
+    .nav-title {
+        display:none;
+    }
+}
+button.navbar-toggler:focus {
+    outline: 1px dotted;
+    outline: 5px auto lime;
+}
+.nav-item a  { padding-left:.5em !important;}
+.nav-item a:hover {color:#fff; background-color:#222; border-left:2px solid #222;}
+.nav-item.active a {color:#fff; background-color:#111; border-left:2px solid lime;}
+@media (min-width: 575.98px) {
+    .nav-item a:hover { border-left:none; border-bottom: 2px solid #222;}
+    .nav-item.active a { border-left:none; border-bottom: 2px solid lime; }
+}
+
+
+.dropdown-menu { background-color: #555; }
+.dropdown-item { color: #ccc; }
+.dropdown-item.active, .dropdown-item:active { color: lime; background-color: #444; }
+.dropdown-item:hover, .dropdown-item:focus { color:#f8f9fa ; background-color:#16181b ; }
+
+
+div.row.odd { background-color:#eee; }
+div.row.data-row:hover { background-color: #ddd; cursor: pointer; }

@@ -1,0 +1,51 @@
+
+<div class="pager" *ngIf="count > 0">
+
+    <div class="description">
+        <span class="page-counts">{{ getMin() }} - {{ getMax() }} of {{ count }}</span>
+        &nbsp;&nbsp;&nbsp;
+        <span class="page-totals">{{ totalPages() }} pages</span>
+    </div>
+
+    <div class="numbers">
+
+        <button class="link"
+                (click)="onPrev()"
+                [disabled]="page === 1 || loading"
+                [ngClass]="{ 'disabled': page === 1 || loading }">
+            &lt; 
+        </button>
+
+        <button *ngFor="let pageNum of getPages()"
+                (click)="onPage(pageNum)"
+                [ngClass]="{'active': pageNum === page, 'disabled': loading}">
+            {{ pageNum }}
+        </button>
+
+        <button class="link"
+                (click)="onNext(true)"
+                [disabled]="lastPage() || loading"
+                [ngClass]="{ 'disabled': lastPage() || loading }">
+             &gt;
+        </button>
+
+    </div>
+
+</div>
+<!--
+
+<!-- list.component.html
+
+<div>list of things</div>
+
+
+<pager [count]="pager_totalRecords"
+       [page]="pager_pageNumber"
+       [perPage]="pager_pageSize"
+       [pagesToShow]="3"
+       (goNext)="pager_onNext()"
+       (goPrev)="pager_onPrev()"
+       (goPage)="pager_goToPage($event)">
+</pager>
+
+-->

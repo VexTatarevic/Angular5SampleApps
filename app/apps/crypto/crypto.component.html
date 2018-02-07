@@ -1,0 +1,52 @@
+
+<p>
+    Browse all different crypto currencies and find more information about them.
+</p>
+<div class="row">
+    <div class="col-md-4 offset-md-8 text-right">
+        Rows per page: &nbsp;
+        <select class="float-right" [ngModel]="pager_pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option [value]="i" *ngFor="let i of devices">{{i}}</option>
+            <option [value]="5">5</option>
+            <option [value]="10">10</option>
+            <option [value]="15">15</option>
+            <option [value]="20">20</option>
+        </select>
+    </div>
+</div>
+
+<hr />
+
+<div class="row data-row"
+     *ngFor="let item of pageData; let index =index; let isOdd=odd; let isEven=even;"
+     [class.odd]="isOdd"
+     [class.even]="isEven"
+     (click)="onDataItemSelected(item)" 
+     >
+    <!--[class.selected]="item === selectedItem"-->
+    <div class="col-md-4 text-center">
+        <!--<a (click)="onDataItemSelected(item)" [routerLink]="['/crypto', item.Symbol]">-->
+            <img [src]="item.ImageUrl" [title]="item.CoinName" />
+        <!--</a>-->
+        
+    </div>
+    <div class="col-md-4 text-center">
+        {{ item.Symbol }}
+    </div>
+    <div class="col-md-4 text-center">
+        <span class="subscript">{{ item.CoinName}}</span>
+    </div>
+</div>
+
+<hr />
+
+<div class="text-center">
+    <pager [count]="pager_totalRecords"
+           [page]="pager_pageNumber"
+           [perPage]="pager_pageSize"
+           [pagesToShow]="3"
+           (goNext)="pager_onNext()"
+           (goPrev)="pager_onPrev()"
+           (goPage)="pager_goToPage($event)">
+    </pager>
+</div>

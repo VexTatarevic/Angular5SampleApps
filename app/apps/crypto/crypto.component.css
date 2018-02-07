@@ -1,0 +1,5 @@
+
+.row { padding: .3em; }
+.row img { height:30px; }
+.row > div { padding: .3em; text-align: center; }
+.row > div .subscript { font-size: .8em; color: #999; }
