@@ -1,12 +1,25 @@
+<!-- Base Currency -->
+<div class="form-group" *ngIf="data.currencies">
+    <label>Base Currency</label>
+    <select class="form-control"
+            [ngModel]="data.currencySelected"
+            (ngModelChange)="onBaseCurrencyChange($event)">
+        <option *ngFor="let c of data.currencies"
+                [ngValue]="c">
+            {{c.code}} - {{c.name}}
+        </option>
+    </select>
+</div>
 
-<p>
-    Browse all different crypto currencies and find more information about them.
-</p>
-<div class="row">
+<hr />
+
+<!-- Rows per page -->
+<div class="row" *ngIf="data.coinDataPage.Data.length > 0">
     <div class="col-md-4 offset-md-8 text-right">
         Rows per page: &nbsp;
-        <select class="float-right" [ngModel]="pager_pageSize" (ngModelChange)="onPageSizeChange($event)">
-            <option [value]="i" *ngFor="let i of devices">{{i}}</option>
+        <select class="float-right"
+                [ngModel]="data.coinDataPage.Size"
+                (ngModelChange)="onPageSizeChange($event)">
             <option [value]="5">5</option>
             <option [value]="10">10</option>
             <option [value]="15">15</option>
@@ -17,36 +30,31 @@
 
 <hr />
 
+<!-- Grid - Messages -->
 <div class="row data-row"
-     *ngFor="let item of pageData; let index =index; let isOdd=odd; let isEven=even;"
+     *ngFor="let item of data.coinDataPage.Data; let index =index; let isOdd=odd; let isEven=even;"
      [class.odd]="isOdd"
      [class.even]="isEven"
-     (click)="onDataItemSelected(item)" 
-     >
-    <!--[class.selected]="item === selectedItem"-->
-    <div class="col-md-4 text-center">
-        <!--<a (click)="onDataItemSelected(item)" [routerLink]="['/crypto', item.Symbol]">-->
-            <img [src]="item.ImageUrl" [title]="item.CoinName" />
-        <!--</a>-->
-        
-    </div>
-    <div class="col-md-4 text-center">
-        {{ item.Symbol }}
-    </div>
-    <div class="col-md-4 text-center">
+     [class.active]="item === selectedItem"
+     (click)="onDataItemSelected(item)">
+
+    <div class="col text-center">
+        <img [src]="item.ImageUrl" [title]="item.CoinName" /><br />
         <span class="subscript">{{ item.CoinName}}</span>
+    </div>
+    <div class="col text-left">
+        {{ item.BaseSymbol }} {{ item.BasePrice }}
     </div>
 </div>
 
 <hr />
 
+<!-- Pager -->
 <div class="text-center">
-    <pager [count]="pager_totalRecords"
-           [page]="pager_pageNumber"
-           [perPage]="pager_pageSize"
-           [pagesToShow]="3"
-           (goNext)="pager_onNext()"
-           (goPrev)="pager_onPrev()"
-           (goPage)="pager_goToPage($event)">
+    <pager [totalItems]="data.coinDataPage.Total"
+           [page]="data.coinDataPage.PageNumber"
+           [itemsPerPage]="data.coinDataPage.Size"
+           [pagesToShow]="data.coinDataPage.PagesToShow"
+           (onPageChange)="onPageChange($event)">
     </pager>
 </div>

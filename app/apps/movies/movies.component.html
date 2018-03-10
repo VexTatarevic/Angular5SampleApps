@@ -1,3 +1,69 @@
-<p>
- Please type in the name of your movie and then hit enter to find details about it.
-</p>
+<!-- Search by movie title -->
+
+    <div class="form-group">
+        <input type="text" required
+               [(ngModel)]="searchTerm"
+               (change)="onSearchChange()"
+               class="form-control"
+               placeholder="Enter Movie name ..." />
+    </div>
+
+
+
+
+<!-- Show Movie details -->
+<div *ngIf="!error && movie.Title">
+    <h2>{{ movie.Title }}</h2>
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <img *ngIf="movie.Poster" [src]="movie.Poster" class="img-fluid" />
+        </div>
+        <div class="col-md-8">
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Plot</label>
+                <div class="col-md-10">
+                    {{movie.Plot}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Actors</label>
+                <div class="col-md-10">
+                    {{movie.Actors}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Directed by</label>
+                <div class="col-md-10">
+                    {{movie.Director}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Rated</label>
+                <div class="col-md-10">
+                    {{movie.Rated}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Release Date</label>
+                <div class="col-md-10">
+                    {{movie.Released}}
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- Show error details -->
+<div *ngIf="error" class="alert alert-danger">
+    <strong>Error:</strong> {{error}}
+</div>
+
+
+
+<br />
+<br />
+<br />

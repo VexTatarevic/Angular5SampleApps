@@ -5,39 +5,43 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AppService } from "../../services/app.service";
 import { CryptoDataService } from './services/crypto-data.service';
 
+// Models
+import { PageConfigDto } from '../../models/page-config-dto';
+import { CoinDto } from './models/coin-dto';
+import { CurrencyDto } from './models/currency-dto';
+import { DataPageDto } from '../../components/pager/data-page-dto';
+
 @Component({
     selector: 'app-crypto',
     templateUrl: './crypto.component.html',
     styleUrls: ['./crypto.component.css']
 })
+ /**
+ * Main component for crypto app
+ *
+ * @author Vex Tatarevic 2018-02-08
+ * @class
+ */
 export class CryptoComponent implements OnInit {
 
 
     //-----------------
     // Properties
     //-----------------
-   
 
-    data: Array<object> = [];
-    pageData: Array<object> = [];
 
-    pager_pageNumber = 1;
-    pager_totalRecords = 0;
-    pager_pageSize = 20;
-
-    baseImageUrl: string;
-    baseLinkUrl: string;
 
 
     //-----------------
-    // Constuctor
+    // Constructor
     //-----------------
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private appSvc: AppService,
-        private dataSvc: CryptoDataService) {
+        public data: CryptoDataService  // expose data service to interface so that data can be accessed from template
+    ) {
     }
 
     //-----------------
@@ -45,106 +49,95 @@ export class CryptoComponent implements OnInit {
     //-----------------
 
     ngOnInit() {
+        // init page configuration
+        var pageConfig = new PageConfigDto({ Name: 'crypto', Title: 'Crypto' });
 
-        this.appSvc.setTitle('Crypto');
+        // init app service
+        this.appSvc.setPageConfig(pageConfig);
+
+        // init coin DataPage object
+        this.data.coinDataPage = new DataPageDto({ PageNumber: 1, Size: 5, PagesToShow: 3 });
+
 
         this.loadData();
-    }
 
-    onPageSizeChange(newSize) {
-        this.pager_pageSize = newSize;
-        this.setPageData();
-    }
-
-    onDataItemSelected(item) {
-        //this.router.navigateByUrl('/crypto');
-
-        this.appSvc.data.selectedCrypto = item;
-        this.router.navigate(['/crypto', item.Symbol]);
     }
 
 
-    /**
-     * Load data from server or fro cached global variable
-     */
     loadData(): void {
-
-        // get global crypto data from app service
-        this.data = this.appSvc.data.cryptos;
-
-        // load cached
-        if (this.data.length > 0)
-            this.setPageData();
-            // load from server
-        else {
-            this.appSvc.setLoadingOverlay('Loading crypto currencies ...');
-
-            // Call Data Service
-            this.dataSvc.getCoins()
-                .subscribe(r => {
-
-                    this.baseImageUrl = r['BaseImageUrl'];
-                    this.baseLinkUrl = r['BaseLinkUrl'];
-                    var d = r['Data'];
-
-                    // fill local data array
-                    for (var key in d) {
-                        var crypto = d[key];
-                        crypto.ImageUrl = this.baseImageUrl + crypto.ImageUrl;
-                        crypto.Url = this.baseLinkUrl + crypto.Url;
-                        this.data.push(crypto);
-                    }
-
-                    // set global crypto data in AppService
-                    this.appSvc.data.cryptos = this.data;
-
-                    // set page data
-                    setTimeout(() => {
-                        this.setPageData();
-                    });
-                }
-                , () => { this.appSvc.setLoadingOverlay(false); }
-                , () => { this.appSvc.setLoadingOverlay(false); }
-                );
+        if (this.data.currencies == null) {
+            this.loadCurrencies();
+        }
+        if (this.data.coinDataPage.AllData == null || this.data.coinDataPage.AllData.length == 0) {
+            this.loadCoins();
         }
     }
 
+    loadCurrencies(): void {
+        this.appSvc.setLoadingOverlay('Loading base currency list ...');
+        this.data.getCurrencies();
+        setTimeout(() => {
+            //this.data.currencies.unshift(new CurrencyDto({ code: '', name: '-- Select Base Currency --' }));
+            this.data.currencySelected = this.data.currencies.filter(c => {
+                return (c.code == 'AUD');
+            })[0];
+        });
+
+        this.appSvc.setLoadingOverlay(false);
+    }
+
     /**
-     * Get a subset of total data and display it on the page
+     * Load data from server
      */
-    setPageData() {
-        this.pager_totalRecords = this.data.length;
-        var data = this.data;
-        var pageNumber = this.pager_pageNumber;
-        var pageSize = this.pager_pageSize;
-        var totalRecords = this.pager_totalRecords;
-        //------------------------------------------
-        var skip = (pageNumber - 1) * pageSize;
-        var take = pageSize;
-        var end = skip + take;
-        end = (end < totalRecords ? end : totalRecords);
-        this.pageData = data.slice(skip, end);
-        console.log('load page: ' + pageNumber);
+    loadCoins(): void {
+        this.appSvc.setLoadingOverlay('Loading crypto currency coins ...');
+        this.data
+            .getAllCoins()
+            .subscribe(r => {
+                // set page data - must put a delay otherwise the ui is not rendered
+                setTimeout(() => {
+                    this.data.coinDataPage.setPageData();
+                    this.loadPrices();
+                });
+            }
+            , () => { this.appSvc.setLoadingOverlay(false); }
+            , () => { this.appSvc.setLoadingOverlay(false); }
+            );
     }
 
-
-    //----------------------
-    //  Pager Events
-    //----------------------
-
-    pager_goToPage(n: number): void {
-        this.pager_pageNumber = n;
-        this.setPageData();
+    loadPrices(): void {
+        var currency: CurrencyDto = this.data.currencySelected;
+        this.appSvc.setLoadingOverlay('Loading prices ...');
+        this.data
+            .getPrices(currency)
+            .subscribe(r => {
+               
+            }
+            , () => { this.appSvc.setLoadingOverlay(false); }
+            , () => { this.appSvc.setLoadingOverlay(false); }
+            );
     }
 
-    pager_onNext(): void {
-        this.pager_pageNumber++;
-        this.setPageData();
+    onBaseCurrencyChange(currency: CurrencyDto) {
+        this.data.currencySelected = currency;
+        this.loadPrices();
     }
 
-    pager_onPrev(): void {
-        this.pager_pageNumber--;
-        this.setPageData();
+    onPageSizeChange(newSize: string) {
+        // set page size and cache it
+        this.data.coinDataPage.Size = parseInt(newSize);
+        this.data.coinDataPage.setPageData();
+        this.loadPrices();
+    }
+
+    onPageChange(pageNumber: number): void {
+        this.data.coinDataPage.setPageData(pageNumber);
+        this.loadPrices();
+    }
+
+    onDataItemSelected(item: CoinDto) {
+        this.data.coinSelected = item;
+        this.router.navigate(['/crypto', item.Symbol]);
     }
 
 

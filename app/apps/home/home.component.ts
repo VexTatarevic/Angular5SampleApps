@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 // Services
 import { AppService } from "../../services/app.service";
 
+// Models
+import { PageConfigDto } from '../../models/page-config-dto';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -23,9 +26,8 @@ export class HomeComponent implements OnInit {
     //-----------------
 
     ngOnInit() {
-
-        // Set page title
-        this.appSvc.setTitle('Apps Home');
+        var pageConfig = new PageConfigDto({ Name: 'home', Title: 'Apps Home' });
+        this.appSvc.setPageConfig(pageConfig);
     }
 
 }

@@ -1,6 +1,5 @@
-﻿.clear-header{ height:50px; width:100%; background-color:#000; color:#fff;}
-
-.clear-header  div { float:left; height:49px; padding-top:10px;}
-.clear-header .nav-block a {  display:inline-block; float:left; color:#fff; text-align:center; width:50px; font-weight:bold; }
-.clear-header .nav-block a:hover { /*background-color:#666;*/ color:lime; text-decoration:none;}
-.clear-header .text-block a {display:inline-block; float:left; color:#fff; width:75%;  }
+﻿.details-page-header { height:50px; width:100%; background-color:#000; color:#fff;}
+.details-page-header table td { color:#fff; text-align:center; height:49px;}
+.details-page-header table td a { display:block; height:100%; color:#fff;  padding:.5em; padding-top:10px;}
+.details-page-header table td a:hover { color:lime;  text-decoration:none; background-color:#333; cursor:pointer;}
+.details-page-header table td:last-child { width: 100%; }

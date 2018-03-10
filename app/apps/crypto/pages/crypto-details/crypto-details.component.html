@@ -1,35 +1,51 @@
 
-<div class="crypto-detail center">
-    <div class="text-center">
-        <h1>{{ item.Symbol}}</h1>
-        <img [src]="item.ImageUrl" />
-    </div>
-    <div class="form-group row">
-        <label class="col-md-4 col-form-label">CoinName</label>
-        <div class="col-md-8">
-            <input type="text" readonly class="form-control-plaintext" [value]="item.CoinName" />
+<div class="crypto-detail row">
+
+    <div class="col-md-4 offset-md-4">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>{{ item.Symbol}}</h2>
+                <img [src]="item.ImageUrl" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-4 col-form-label">Algorithm</label>
-        <div class="col-md-8">
-            <input type="text" readonly class="form-control-plaintext" [value]="item.Algorithm" />
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">CoinName</label>
+            <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext" [value]="item.CoinName" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-4 col-form-label">Sponsored</label>
-        <div class="col-md-8">
-            <input type="text" readonly class="form-control-plaintext" [value]="item.Sponsored" />
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Price</label>
+            <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext" [value]="item.BaseSymbol + ' ' + item.BasePrice" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-md-4 col-form-label">Total Coin Supply</label>
-        <div class="col-md-8">
-            <input type="text" readonly class="form-control-plaintext" [value]="item.TotalCoinSupply" />
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Algorithm</label>
+            <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext" [value]="item.Algorithm" />
+            </div>
         </div>
-    </div>
-    <div class="text-center">
-        <a class="btn btn-primary" [href]="item.Url" target="_blank">More Details</a>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Sponsored</label>
+            <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext" [value]="item.Sponsored" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">Total Coin Supply</label>
+            <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext" [value]="item.TotalCoinSupply" />
+            </div>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-primary" [href]="item.Url" target="_blank">More Details</a>
+        </div>
+
     </div>
 </div>
-    
+
+<br />
+<br />
+<br />

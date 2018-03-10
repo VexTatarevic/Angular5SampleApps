@@ -1,8 +1,11 @@
+
 /**
- * Object containing data for one crypto currency
- * @class
- */
-export class CryptoModel {
+*  Object containing data for one crypto coin
+*
+* @author Vex Tatarevic 2018-02-08
+* @class
+*/
+export class CoinDto {
     Id: string; // int
     Algorithm: string;
     CoinName: string;
@@ -18,4 +21,11 @@ export class CryptoModel {
     TotalCoinSupply: string; // int
     TotalCoinsFreeFloat: string;
     Url: string;
+
+    BaseSymbol: string;
+    BasePrice: number; // decimal
+
+    constructor(values: Object = {}) {
+        Object.assign(this, values);
+    }
 }

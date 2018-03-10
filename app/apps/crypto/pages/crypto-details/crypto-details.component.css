@@ -1,1 +1,8 @@
 .crypto-detail img { width:100px;}
+
+.col-form-label { text-align:center; }
+.form-control-plaintext { text-align:center; }
+@media (min-width: 575.98px) {    
+.col-form-label { text-align:left; }
+.form-control-plaintext { text-align:left; }
+}

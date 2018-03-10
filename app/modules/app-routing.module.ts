@@ -7,7 +7,8 @@ import { HomeComponent } from "../apps/home/home.component";
 import { CryptoComponent } from "../apps/crypto/crypto.component";
 import { CryptoDetailsComponent } from "../apps/crypto/pages/crypto-details/crypto-details.component";
 import { MoviesComponent } from "../apps/movies/movies.component";
-import { WeatherComponent } from "../apps/weather/weather.component";
+import { GuestbookComponent } from "../apps/guestbook/guestbook.component";
+import { GuestbookMessageComponent } from "../apps/guestbook/pages/guestbook-message/guestbook-message.component";
 
 
 const routes: Routes = [
@@ -17,7 +18,9 @@ const routes: Routes = [
     { path: 'crypto', component: CryptoComponent },
     { path: 'crypto/:id', component: CryptoDetailsComponent },
     { path: 'movies', component: MoviesComponent },
-    { path: 'weather', component: WeatherComponent }
+    { path: 'guestbook', component: GuestbookComponent },
+    { path: 'guestbook/message', component: GuestbookMessageComponent },
+    { path: 'guestbook/message/:id', component: GuestbookMessageComponent }
 ];
 
 @NgModule({

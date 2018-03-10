@@ -1,51 +1,92 @@
 
-<div class="pager" *ngIf="count > 0">
+<div class="pager" *ngIf="totalItems > 0">
 
     <div class="description">
-        <span class="page-counts">{{ getMin() }} - {{ getMax() }} of {{ count }}</span>
+        <span class="page-counts">{{ getMin() }} - {{ getMax() }} of {{ totalItems }}</span>
         &nbsp;&nbsp;&nbsp;
-        <span class="page-totals">{{ totalPages() }} pages</span>
+        on
+        <span class="page-totals">{{ totalPages() }}</span>
+        page<span *ngIf="totalPages()>1">s</span>
     </div>
 
-    <div class="numbers">
+    <div class="number-links">
 
-        <button class="link"
-                (click)="onPrev()"
-                [disabled]="page === 1 || loading"
-                [ngClass]="{ 'disabled': page === 1 || loading }">
-            &lt; 
-        </button>
 
-        <button *ngFor="let pageNum of getPages()"
-                (click)="onPage(pageNum)"
-                [ngClass]="{'active': pageNum === page, 'disabled': loading}">
+        <!-- Active First Page Link -->
+        <a class="half" *ngIf="page > 1"
+           (click)="onFirst()">
+            |&lt;
+        </a>
+
+        <!-- Disabled First Page Link -->
+        <span class="half" *ngIf="page === 1">
+            |&lt;
+        </span>
+
+        <!-- Active Previous Link -->
+        <a class="half" *ngIf="page > 1"
+           (click)="onPrev()">
+            &lt;
+        </a>
+
+        <!-- Disabled Previous Link -->
+        <span class="half" *ngIf="page === 1">
+            &lt;
+        </span>
+
+
+        <!-- Page Links -->
+        <a *ngFor="let pageNum of getPages()"
+           (click)="onPage(pageNum)"
+           [ngClass]="{'active': pageNum === page, 'disabled': loading}">
             {{ pageNum }}
-        </button>
+        </a>
 
-        <button class="link"
-                (click)="onNext(true)"
-                [disabled]="lastPage() || loading"
-                [ngClass]="{ 'disabled': lastPage() || loading }">
-             &gt;
-        </button>
+
+        <!-- Active Next Link -->
+        <a class="half" *ngIf="!isLastPage()"
+           (click)="onNext()">
+            &gt;
+        </a>
+
+
+        <!--Disabled Next Link-->
+        <span *ngIf="isLastPage()">
+            &gt;
+        </span>
+
+
+        <!-- Active Last Page Link -->
+        <a class="half" *ngIf="!isLastPage()"
+           (click)="onLast()">
+            &gt;|
+        </a>
+
+
+        <!--Disabled Next Link-->
+        <span class="half" *ngIf="isLastPage()">
+            &gt;|
+        </span>
 
     </div>
 
 </div>
-<!--
+<!-- USAGE :
 
 <!-- list.component.html
 
 <div>list of things</div>
 
 
-<pager [count]="pager_totalRecords"
+<pager [totalItems]="pager_totalRecords"
        [page]="pager_pageNumber"
-       [perPage]="pager_pageSize"
+       [itemsPerPage]="pager_pageSize"
        [pagesToShow]="3"
-       (goNext)="pager_onNext()"
-       (goPrev)="pager_onPrev()"
-       (goPage)="pager_goToPage($event)">
+       (onPageClick)="pager_onPageClick($event)"
+    >
 </pager>
+
+
+
 
 -->

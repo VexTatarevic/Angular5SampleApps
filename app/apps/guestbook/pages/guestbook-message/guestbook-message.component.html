@@ -1,0 +1,169 @@
+<!-- Message Form -->
+<form [formGroup]="form"
+      (ngSubmit)="onSave()"
+      novalidate>
+
+    <!-- Date Sent -->
+    <div class="form-group row" *ngIf="item.Id">
+        <div class="col" [ngClass]="data.getCategoryCssClass(item.CategoryId)">
+            <i class="fas fa-flag"></i> &nbsp; &nbsp;
+            {{item.CategoryName}}
+        </div>
+        <div class="col">
+
+            <input type="text" readonly
+                   class="form-control-plaintext text-md color-silver text-right"
+                   [value]="item.DateSent | date:'EEEE, d MMM y,  HH:mm a'" />
+
+        </div>
+    </div>
+
+    <!-- Subject -->
+    <div class="form-group row" [class.invalid]="SubjectErrors">
+        <div class="col-sm-2 col-form-label">Subject</div>
+        <div class="col-sm-10">
+
+            <input type="text" class="form-control text-bold"
+                   placeholder="Subject"
+                   formControlName="Subject" />
+
+            <!-- Validation Errors -->
+            <ul class="errors" *ngIf="SubjectErrors">
+                <li *ngFor="let error of SubjectErrors">{{error}}</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- Category -->
+    <div class="form-group row" [class.invalid]="CategoryIdErrors">
+        <label class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+
+            <select class="form-control" formControlName="CategoryId">
+                <option [ngValue]="c.Id" 
+                        (ngModelChange)="onCategoryChange($event)"
+                        *ngFor="let c of data.categories" 
+                        [ngClass]="data.getCategoryCssClass(c.Id)"
+                        >
+                    {{c.Name}}
+                </option>
+            </select>
+
+            <!-- Validation Errors -->
+            <ul class="errors" *ngIf="CategoryIdErrors">
+                <li *ngFor="let error of CategoryIdErrors">{{error}}</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- Name -->
+    <div class="form-group row" [class.invalid]="NameErrors">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+
+            <input type="text" class="form-control"
+                   placeholder="Name"
+                   formControlName="Name" />
+
+            <!-- Validation Errors -->
+            <ul class="errors" *ngIf="NameErrors">
+                <li *ngFor="let error of NameErrors">{{error}}</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group row" [class.invalid]="EmailErrors">
+        <label class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+
+            <input type="email"
+                   class="form-control"
+                   placeholder="Email"
+                   formControlName="Email" />
+
+            <!-- Validation Errors -->
+            <ul class="errors" *ngIf="EmailErrors">
+                <li *ngFor="let error of EmailErrors">{{error}}</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- Text -->
+    <div class="form-group row" [class.invalid]="TextErrors">
+        <label class="col-sm-2 col-form-label">Message</label>
+        <div class="col-sm-10">
+
+            <textarea class="form-control" placeholder="Message Text"
+                      rows="10"
+                      formControlName="Text"></textarea>
+
+            <!-- Validation Errors -->
+            <ul class="errors" *ngIf="TextErrors">
+                <li *ngFor="let error of TextErrors">{{error}}</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <hr />
+
+
+    <!-- Serverside Error -->
+    <div class="alert alert-danger" role="alert"  *ngIf="serverErrors">
+        <strong>Error!</strong>
+        <ul>
+            <li *ngFor="let errors of serverErrors">
+                <ul>
+                    <li *ngFor="let err of errors">
+                        <div>{{err}}</div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <button type="button" class="close" aria-label="Close" (click)="onCloseServerErrorAlertClick()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-group row">
+        <div class="col-sm-12">
+
+            <!-- Cancel -->
+            <a class="btn btn-outline-secondary float-left" 
+               (click)="onCancel()"
+               *ngIf="!isActionInProgress"
+               >
+                <i class="fas fa-ban"></i> Cancel
+            </a>
+
+            <!-- Delete -->
+            <a class="btn btn-outline-danger float-left" 
+               (click)="onRemove()" 
+               *ngIf="item.Id && !isActionInProgress">
+                <i class="fas fa-trash-alt"></i> Delete
+            </a>
+
+            <!-- Update Message -->
+            <button type="submit" class="btn btn-primary float-right"
+                    *ngIf="item.Id"
+                    [disabled]="!form.valid || form.pristine || isActionInProgress">
+                <i class="far fa-save"></i> Save Message
+            </button>
+
+            <!-- Add Message -->
+            <button type="submit" class="btn btn-primary float-right"
+                    *ngIf="!item.Id"
+                    [disabled]="!form.valid || isActionInProgress">
+                <i class="fa fa-plus"></i> Add Message
+            </button>
+
+        </div>
+    </div>
+
+</form>

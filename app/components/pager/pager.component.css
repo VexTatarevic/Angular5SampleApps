@@ -1,10 +1,17 @@
 
 .pager { margin-top:.5em;margin-bottom:.5em;}
 .pager .description { font-size:.8em; color:#666; text-align:center; }
-.pager .numbers { margin-top:.5em; }
-.pager button { padding:.5em 1em; background-color:#eee; color: #333; border-color:transparent;}
-.pager button:focus {outline:0;}
-.pager button:hover { background-color:#666; color: #fff; cursor:pointer; }
-.pager button.active { background-color:#333; color: #fff; border-bottom:2px solid lime;}
-.pager button.disabled { color: #ccc;}
-.pager button.disabled:hover {background-color:#ddd; color: #ccc; cursor:default;}
+
+.pager .number-links { margin-top:1em; }
+.pager .number-links a, .pager .number-links span {
+    padding:.5em .7em; background-color:#eee; color: #333; border-color:transparent; 
+    text-align:center;
+}
+.pager .number-links a.half, .pager .number-links span.half { padding:.5em .4em; }
+
+.pager .number-links a:focus { outline:0; }
+.pager .number-links a:hover { background-color:#666; color: #fff; cursor:pointer; }
+.pager .number-links a.active { background-color:#333; color: #fff; border-bottom:2px solid lime; cursor:default;}
+
+
+.pager .number-links span { color: #ccc; cursor:default; }

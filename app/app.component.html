@@ -1,31 +1,38 @@
 
-<div class="clear-header" *ngIf="title=='Crypto Details'">
-    <div class="nav-block">
-        <a href="#/crypto" class="float-left"><i class="fas fa-chevron-left"></i></a>
-    </div>
-    <div class="text-block">{{title}}</div>
+<!--Details Page Header-->
+<div *ngIf="page.Level > 1"
+     class="details-page-header">
+    <table>
+        <tr>
+            <td><a class="float-left" (click)="onNavBack()"><i class="fas fa-chevron-left"></i></a></td>
+            <td>{{page.Title}}</td>
+        </tr>
+    </table>
 </div>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top" *ngIf="title!='Crypto Details'">
+
+<!--Main Page Header-->
+<nav *ngIf="page.Level == 1"
+     class="navbar navbar-expand-md navbar-dark fixed-top">
     <a class="navbar-brand"  href="/">
         <img title="VEXIT" src="/_vexit/img/logo.png" width="100">
     </a>
-    <div class="nav-title">{{title}}</div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="nav-title">{{page.Title}}</div>
+    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item" [ngClass]="{ 'active': page == 'home'}">
+            <li class="nav-item" [ngClass]="{ 'active': page.Name == 'home'}">
                 <a class="nav-link" href="#/" (click)="onMenuItemClick($event, 'home')">Home</a>
             </li>
-            <li class="nav-item" [ngClass]="{ 'active': page == 'crypto'}">
+            <li class="nav-item" [ngClass]="{ 'active': page.Name == 'crypto'}">
                 <a class="nav-link" href="#/crypto" (click)="onMenuItemClick($event, 'crypto')">Crypto</a>
             </li>
-            <li class="nav-item" [ngClass]="{ 'active': page == 'movies'}">
+            <li class="nav-item" [ngClass]="{ 'active': page.Name == 'movies'}">
                 <a class="nav-link" href="#/movies" (click)="onMenuItemClick($event, 'movies')">Movies</a>
             </li>
-            <li class="nav-item" [ngClass]="{ 'active': page == 'weather'}">
-                <a class="nav-link" href="#/weather" (click)="onMenuItemClick($event, 'weather')">Weather</a>
+            <li class="nav-item" [ngClass]="{ 'active': page.Name == 'guestbook'}">
+                <a class="nav-link" href="#/guestbook" (click)="onMenuItemClick($event, 'guestbook')">Guestbook</a>
             </li>
 
             <!--<li class="nav-item dropdown">
@@ -46,7 +53,7 @@
 <div class="app-body container" style="margin-top:70px;">
     <!--<app-menu></app-menu>-->
 
-    <loading-overlay *ngIf="loadingOverlayModel.show" [overlay]="loadingOverlayModel"></loading-overlay>
+    <loading-overlay *ngIf="loadingOverlay.show" [overlay]="loadingOverlay"></loading-overlay>
 
     
 

@@ -5,7 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { AppService } from "./services/app.service";
 
 // Models
-import { LoadingOverlayModel } from "./models/loading-overlay-model";
+import { LoadingOverlayDto } from "./models/loading-overlay-dto";
+import { PageConfigDto } from "./models/page-config-dto";
 
 
 @Component({
@@ -19,9 +20,9 @@ export class AppComponent {
     //      Properties
     //------------------
 
-    title = '';
-    page = 'home';
-    loadingOverlayModel: LoadingOverlayModel = { show: false, text: '' };
+   
+    page: PageConfigDto = new PageConfigDto();
+    loadingOverlay: LoadingOverlayDto = { show: false, text: '' };
 
     //-----------------
     // Constuctor
@@ -37,33 +38,36 @@ export class AppComponent {
 
     // On Init Event
     ngOnInit() {
+        
 
         // Listen for loading status change and show or hide Loading indicator
         this.svc.getLoadingOverlay().subscribe(input => {
             setTimeout(() => {
                 if (typeof input == 'string')
-                    this.loadingOverlayModel = { show: true, text: input };
+                    this.loadingOverlay = { show: true, text: input };
                 else if (typeof input == 'boolean')
-                    this.loadingOverlayModel = { show: input, text: 'Loading ...' };
+                    this.loadingOverlay = { show: input, text: 'Loading ...' };
                 else if (typeof input == 'object')
-                    this.loadingOverlayModel = input as LoadingOverlayModel;
+                    this.loadingOverlay = input as LoadingOverlayDto;
             });
         });
 
         // listen for page change and change page Title
-        this.svc.getTitle().subscribe(title => {
+        this.svc.getPageConfig().subscribe(page => {
             setTimeout(() => {
-                //this.titleService.setTitle(title as string);
-                this.title = title as string;
+                this.page = page;
             });
         });
     }
 
-    onMenuItemClick(event, page) {
+    onMenuItemClick(event, pageName) {
         setTimeout(() => {
-            this.page = page;
-            console.log(this.page);
+            this.page.Name = pageName;
         });
+    }
+
+    onNavBack() {
+        this.svc.navigateBack(this.page);
     }
 
 }

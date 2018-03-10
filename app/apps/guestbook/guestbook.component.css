@@ -1,0 +1,4 @@
+
+.guestbook .list .row { background-color:#ddd; }
+.guestbook .list .row.done { background-color:#fff; }
+
